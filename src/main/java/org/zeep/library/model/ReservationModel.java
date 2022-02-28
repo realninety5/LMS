@@ -14,8 +14,8 @@ public class ReservationModel {
     @Id
     private UUID id;
 
-    @OneToMany(targetEntity = BookModel.class, fetch = FetchType.EAGER)
-    private List<BookModel> reserves;
+    @Column(name = "reserves")
+    private BookModel reserves;
 
     @Column(name = "date")
     private Date date;
