@@ -1,0 +1,46 @@
+package org.zeep.library.enums;
+
+import lombok.Data;
+import lombok.Setter;
+
+public enum Genre {
+    Adventure,
+    Art,
+    Architecture,
+    History,
+    Autobiography,
+    Anthology,
+    Biography,
+    Business,
+    Children,
+    Classic,
+    Cookbook,
+    Comic,
+    Diary,
+    Dictionary,
+    Crime,
+    Encyclopedia,
+    Drama,
+    Guide,
+    Health,
+    Fantasy,
+    Humor,
+    Horror,
+    Mystery,
+    Math,
+    Paranormal,
+    Romance,
+    Memoir,
+    Philosophy,
+    Poetry,
+    Political,
+    Religion,
+    Textbook,
+    Satire,
+    Scifi,
+    Review,
+    ShortStory,
+    Science,
+    Sports,
+    Travel
+}
