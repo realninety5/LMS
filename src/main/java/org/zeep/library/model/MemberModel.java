@@ -7,6 +7,7 @@ import org.zeep.library.model.inheritance.*;
 import org.zeep.library.enums.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class MemberModel extends Account {
     private int booksBorrowedCount;
 
     @Column(name = "date_reg")
-    private Date date_reg;
+    private LocalDate date_reg;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")

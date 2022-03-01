@@ -22,6 +22,9 @@ public class Address {
     @Column(name = "city")
     private String city;
 
+    @Column(name = "stree")
+    private String street;
+
     @OneToOne(mappedBy = "address")
     private MemberModel memberModel;
 }
