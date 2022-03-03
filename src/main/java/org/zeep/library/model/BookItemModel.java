@@ -14,8 +14,9 @@ public class BookItemModel {
     @Id
     private UUID id;
 
-    @Column(name = "call_number")
-    private String callNumber;
+    // Starts from 1000
+    @Column(name = "position")
+    private String position;
 
     @Column(name = "borrowed_date")
     private Date borrowedDate;

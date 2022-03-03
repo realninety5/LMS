@@ -13,8 +13,14 @@ public class Author {
     @Id
     private UUID id;
 
-    @Column(name = "name")
-    private String authorName;
+    @Column(name = "firstname")
+    private String firstName;
+
+    @Column(name = "lastname")
+    private String lastName;
+
+    @Column(name = "initial")
+    private String initial;
 
     @OneToMany(targetEntity = BookItemModel.class)
     private List<BookItemModel> books;

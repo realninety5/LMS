@@ -26,6 +26,9 @@ public class BookModel {
     @Column(name = "genre")
     private Genre genre;
 
+    @Column(name = "desc")
+    private String desc;
+
     @OneToMany(targetEntity = BookEditionModel.class)
     private List<BookEditionModel> editions;
 }

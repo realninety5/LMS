@@ -14,9 +14,15 @@ public class ReservationModel {
     @Id
     private UUID id;
 
-    @Column(name = "reserves")
-    private BookModel reserves;
+    // The reserved book
+    @Column(name = "reserved_book")
+    private BookModel reservedBook;
 
+    // Who reserved the book
+    @Column(name = "reserved_by")
+    private MemberModel reservedBy;
+
+    // The date it was reserved
     @Column(name = "date")
     private Date date;
 }
