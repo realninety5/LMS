@@ -10,6 +10,8 @@ import org.zeep.library.model.Author;
 import org.zeep.library.model.BookItemModel;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,19 +27,29 @@ class AuthorRepoTest {
     BookItemModel b = BookItemModel.builder().id(UUID.randomUUID()).build();
     BookItemModel b1 = BookItemModel.builder().id(UUID.randomUUID()).build();
 
-    Author author = Author.builder().authorName("J. R. R. Tolkien").id(UUID.randomUUID())
+    Author author = Author.builder().firstName("Tolkien").lastName("John").initial("R").id(UUID.randomUUID())
             .books(Arrays.asList(b, b1)).build();
 
     @BeforeEach
     void setUp() {
-        lenient().when(repo.findByAuthorName("J. R. R. Tolkien")).thenReturn(author);
+
+        lenient().when(repo.findByFirstNameAndLastName("Tolkien", "John")).thenReturn(author);
+        lenient().when(repo.findByFirstName("Tolkien")).thenReturn(Collections.singletonList(author));
     }
 
     @Test
-    void findByAuthorName() {
-        Author a = repo.findByAuthorName("J. R. R. Tolkien");
+    void findByFirstNameAndLastName() {
+        Author a = repo.findByFirstNameAndLastName("Tolkien", "John");
         assertNotNull(a);
         assertEquals(2, a.getBooks().size());
-        assertEquals("J. R. R. Tolkien", a.getAuthorName());
+        assertEquals("Tolkien", a.getFirstName());
+    }
+
+    @Test
+    void findByFirstName() {
+        List<Author> a = repo.findByFirstName("Tolkien");
+        assertNotNull(a);
+        assertEquals(2, a.get(0).getBooks().size());
+        assertEquals("Tolkien", a.get(0).getFirstName());
     }
 }

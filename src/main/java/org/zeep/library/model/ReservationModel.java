@@ -15,11 +15,13 @@ public class ReservationModel {
     private UUID id;
 
     // The reserved book
-    @Column(name = "reserved_book")
+//    @Column(name = "reserved_book")
+    @OneToOne(targetEntity = BookModel.class)
     private BookModel reservedBook;
 
     // Who reserved the book
-    @Column(name = "reserved_by")
+//    @Column(name = "reserved_by")
+    @OneToOne(targetEntity = MemberModel.class)
     private MemberModel reservedBy;
 
     // The date it was reserved

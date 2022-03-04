@@ -10,7 +10,7 @@ import javax.validation.constraints.*;
 import java.time.*;
 
 
-@Builder
+//@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter

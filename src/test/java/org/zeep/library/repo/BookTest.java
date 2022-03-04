@@ -29,7 +29,7 @@ class BookTest {
     private final BookEditionModel edition = BookEditionModel.builder().barcode(null).id(UUID.randomUUID())
             .numOfPages(300).isbn("QW1276736739").publisher("Jeho Pub").build();
     private final BookItemModel item = BookItemModel.builder().id(UUID.randomUUID()).available(true)
-            .borrowedBy(null).borrowedDate(null).callNumber("Sti-doine").build();
+            .borrowedBy(null).borrowedDate(null).position("1001").build();
 //    private final BookEditionModel bookEdition = BookEditionModel.builder().
 
     @BeforeEach
@@ -51,7 +51,7 @@ class BookTest {
         book.setEditions(Collections.singletonList(edition));
         BookModel b = bookRepo.save(book);
         assertNotNull(b);
-        assertEquals("Sti-doine", b.getEditions().get(0).getAllBooks().get(0).getCallNumber());
+        assertEquals("Sti-doine", b.getEditions().get(0).getAllBooks().get(0).getPosition());
     }
 
     @Test @DisplayName("Get a book from the db.")

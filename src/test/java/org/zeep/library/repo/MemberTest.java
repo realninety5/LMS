@@ -12,6 +12,7 @@ import org.zeep.library.model.LibraryCardModel;
 import org.zeep.library.model.MemberModel;
 import org.zeep.library.repo.MemberRepository;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -25,9 +26,11 @@ public class MemberTest {
     @Mock
     MemberRepository memberRepo;
 
-    MemberModel m = MemberModel.builder().password("how").dob(new Date()).date_reg(new Date()).accountType(AccountType.STANDARD)
-                .id(UUID.randomUUID()).booksBorrowedCount(0).email("k@og.com").gender(Gender.Male).firstName("Okah")
-                .lastName("jom").libraryCard(new LibraryCardModel()).status(Status.Active).username("olo").build();
+    MemberModel m = MemberModel.builder().password("how").dob(LocalDate.of(1992,8,7))
+            .date_reg(new Date()).accountType(AccountType.STANDARD).id(UUID.randomUUID())
+            .booksBorrowedCount(0).email("k@og.com").gender(Gender.Male).firstName("Okah")
+            .lastName("jom").libraryCard(new LibraryCardModel()).status(Status.Active)
+            .username("olo").build();
 
     @BeforeEach
     void setUp() {
