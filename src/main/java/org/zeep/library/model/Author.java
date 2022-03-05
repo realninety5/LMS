@@ -22,6 +22,13 @@ public class Author {
     @Column(name = "initial")
     private String initial;
 
-    @OneToMany(targetEntity = BookItemModel.class)
-    private List<BookItemModel> books;
+    @ManyToMany(targetEntity = BookItemModel.class)
+    private List<BookModel> books;
+
+    public BookModel getBook(UUID ids) {
+        for (BookModel book: books) {
+            if(book.getId().compareTo(ids)==0) return book;
+        }
+        return null;
+    }
 }

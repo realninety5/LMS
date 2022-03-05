@@ -2,6 +2,7 @@ package org.zeep.library.domain.MemberDomain.Requests;
 
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.zeep.library.Exceptions.validators.ValueOfEnum;
 import org.zeep.library.enums.AccountType;
 import org.zeep.library.enums.Gender;
@@ -10,7 +11,7 @@ import javax.validation.constraints.*;
 import java.time.*;
 
 
-//@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter

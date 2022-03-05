@@ -1,13 +1,18 @@
 package org.zeep.library.controller;
 
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.zeep.library.domain.BookDomain.Requests.BookAddRequest;
+import org.zeep.library.domain.BookDomain.Responses.BookResponse;
+import org.zeep.library.service.BookService;
 
-@ResponseBody
-@RestController("manage/")
+import javax.validation.Valid;
+
+@RestController
+@RequestMapping("manage/")
 public class BookManagementController {
     /**
      * Possible mapping for book management endpoints
@@ -16,14 +21,15 @@ public class BookManagementController {
      *  deactivate/{user_id}, activate/{user_id}, blacklist{user_id}/
      */
 
-    @PostMapping("add/{book_id}")
-    public void addBook() {
-        //return;
+    @Autowired
+    BookService service;
+
+    @PostMapping("add/")
+    public ResponseEntity<BookResponse> addBook(@Valid @RequestBody BookAddRequest request) {
+        BookResponse response = service.addBook(request);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
-    @PostMapping("remove/{book_id}")
-    public void removeBook() {
-        //return;
-    }
+
     @PutMapping("update/{book_id}")
     public void updateBook() {
         //return;

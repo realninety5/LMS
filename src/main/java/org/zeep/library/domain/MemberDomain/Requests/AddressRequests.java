@@ -12,7 +12,6 @@ import javax.validation.constraints.Pattern;
 
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @Setter
 @Getter
 public class AddressRequests {

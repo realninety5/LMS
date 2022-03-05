@@ -1,12 +1,14 @@
 package org.zeep.library.domain.MemberDomain.Requests;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-@NoArgsConstructor @AllArgsConstructor @Builder @Data
+@NoArgsConstructor @AllArgsConstructor @SuperBuilder
+@Data
 public class LibrarianCreateRequest {
 
     @NotEmpty(message = "Enter a Username")

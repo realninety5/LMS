@@ -20,8 +20,8 @@ public class BookModel {
     @Column(name = "book_name")
     private String bookName;
 
-    @OneToOne(targetEntity = Author.class)
-    private Author author;
+    @ManyToMany(targetEntity = Author.class)
+    private List<Author> author;
 
     @Column(name = "genre")
     private Genre genre;
@@ -31,4 +31,13 @@ public class BookModel {
 
     @OneToMany(targetEntity = BookEditionModel.class)
     private List<BookEditionModel> editions;
+
+    public BookEditionModel getEdition(String edition) {
+        for (BookEditionModel editionF: editions) {
+            if(editionF.getEdition().equalsIgnoreCase(edition)) {
+                return editionF;
+            }
+        }
+        return null;
+    }
 }

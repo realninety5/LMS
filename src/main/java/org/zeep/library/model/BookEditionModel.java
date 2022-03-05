@@ -19,6 +19,9 @@ public class BookEditionModel {
     @Id
     private UUID id;
 
+    @Column(name = "edition")
+    private String edition;
+
     // @param: value to encode(isbn), format(qrcode), width, height
     @Column(name = "barcode") @Lob
     private byte[] barcode;

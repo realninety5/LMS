@@ -1,17 +1,32 @@
 package org.zeep.library.controller;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.zeep.library.domain.MemberDomain.Requests.CreateMember;
+import org.zeep.library.domain.MemberDomain.Responses.MemberResponse;
+import org.zeep.library.service.MemberService;
 
-@RestController("m/")
-@ResponseBody
+import javax.validation.Valid;
+
+@RestController
+@RequestMapping("m/")
 public class MemberController {
 
     /**
      * This is the controller that allows users to get their profiles
      */
+
+    @Autowired
+    MemberService service;
+
+    @PostMapping("sign-up/")
+    public ResponseEntity<MemberResponse> create(@Valid @RequestBody CreateMember request) {
+        MemberResponse response = service.create(request);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
 
     @GetMapping("{user_id}/")
     public void getUser() {
@@ -27,4 +42,6 @@ public class MemberController {
     public void getReservation() {
         return;
     }
+
+
 }

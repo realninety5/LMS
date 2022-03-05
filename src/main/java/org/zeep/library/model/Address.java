@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 @Table(name = "Address")
 @Entity
-@Getter @Setter
+@Getter @Setter @Builder
 @NoArgsConstructor @AllArgsConstructor
 public class Address {
 
@@ -22,9 +22,9 @@ public class Address {
     @Column(name = "city")
     private String city;
 
-    @Column(name = "stree")
+    @Column(name = "street")
     private String street;
 
-    @OneToOne(mappedBy = "address")
-    private MemberModel memberModel;
+//    @OneToOne(mappedBy = "address")
+//    private MemberModel memberModel;
 }

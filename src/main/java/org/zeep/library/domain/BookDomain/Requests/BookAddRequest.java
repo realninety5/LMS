@@ -36,11 +36,11 @@ public class BookAddRequest {
     private Genre genre;
 
     @NotEmpty(message = "Please enter a valid ISBN.")
-    @Size(min = 10, max = 10)
+    @Size(min = 10, max = 13)
     private String isbn;
 
     @NotEmpty(message = "Provide a little description of the book.")
-    @Size(min = 20, max = 200)
+    @Size(min = 20, max = 400)
     private String desc;
 
     @NotEmpty(message = "please enter the publisher's name")
@@ -51,4 +51,7 @@ public class BookAddRequest {
 
     @NotNull(message = "Please enter the number of pages in the book.")
     private int numOfPages;
+
+    @NotEmpty(message = "Enter book's edition.")
+    private String edition;
 }
