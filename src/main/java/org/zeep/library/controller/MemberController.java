@@ -22,23 +22,23 @@ public class MemberController {
     @Autowired
     MemberService service;
 
-    @PostMapping("sign-up/")
+    @PostMapping("sign-up")
     public ResponseEntity<MemberResponse> create(@Valid @RequestBody CreateMember request) {
         MemberResponse response = service.create(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @GetMapping("{user_id}/")
+    @GetMapping("{user_id}")
     public void getUser() {
         return;
     }
 
-    @GetMapping("notification/")
+    @GetMapping("notification")
     public void getNotification() {
         return;
     }
 
-    @GetMapping("reservation/")
+    @GetMapping("reservation")
     public void getReservation() {
         return;
     }

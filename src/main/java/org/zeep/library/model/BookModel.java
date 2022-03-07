@@ -1,16 +1,19 @@
 package org.zeep.library.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.zeep.library.enums.Genre;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor @Builder
 //@SuperBuilder
-@Entity //@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Entity @Table(name = "book")//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class BookModel {
 
     @Id
@@ -20,8 +23,9 @@ public class BookModel {
     @Column(name = "book_name")
     private String bookName;
 
-    @ManyToMany(targetEntity = Author.class)
-    private List<Author> author;
+    @JsonIgnoreProperties("books")
+    @ManyToMany(mappedBy = "books", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)//(targetEntity = Author.class)
+    private Set<Author> author = new HashSet<>();
 
     @Column(name = "genre")
     private Genre genre;

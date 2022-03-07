@@ -1,4 +1,4 @@
-package org.zeep.library.domain.BookDomain.Requests;
+package org.zeep.library.domain.AuthorDomain.Request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

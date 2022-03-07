@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.UUID;
 
 //@SuperBuilder
-@Builder @AllArgsConstructor @NoArgsConstructor @Getter @Setter @Entity
+@Builder @AllArgsConstructor @NoArgsConstructor @Getter @Setter @Entity @Table(name = "book_item")
 public class BookItemModel {
 
     @Id

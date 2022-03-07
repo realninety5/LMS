@@ -3,19 +3,15 @@ package org.zeep.library.domain.BookDomain.Requests;
 
 import lombok.*;
 import org.zeep.library.Exceptions.validators.ValueOfEnum;
+import org.zeep.library.domain.AuthorDomain.Request.AuthorRequest;
 import org.zeep.library.enums.Genre;
-import org.zeep.library.model.Author;
-import org.zeep.library.model.BookEditionModel;
 
-import javax.persistence.Column;
-import javax.persistence.Lob;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Builder
 @AllArgsConstructor
@@ -29,7 +25,7 @@ public class BookAddRequest {
     private String bookName;
 
     @NotEmpty(message = "You must enter author's details")
-    private AuthorRequest author;
+    private Set<AuthorRequest> author;
 
     @ValueOfEnum(enumClass = Genre.class)
     @NotNull(message = "Please specify a genre.")
@@ -47,7 +43,7 @@ public class BookAddRequest {
     private String publisher;
 
     @NotNull(message = "Please enter the date the bok was published.")
-    private Date published;
+    private String published;
 
     @NotNull(message = "Please enter the number of pages in the book.")
     private int numOfPages;

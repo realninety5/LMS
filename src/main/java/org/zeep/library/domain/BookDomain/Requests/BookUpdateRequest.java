@@ -2,6 +2,7 @@ package org.zeep.library.domain.BookDomain.Requests;
 
 import lombok.*;
 import org.zeep.library.Exceptions.validators.ValueOfEnum;
+import org.zeep.library.domain.AuthorDomain.Request.AuthorRequest;
 import org.zeep.library.enums.Genre;
 
 import javax.validation.constraints.*;

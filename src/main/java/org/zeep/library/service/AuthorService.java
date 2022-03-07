@@ -1,16 +1,17 @@
 package org.zeep.library.service;
 
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.zeep.library.domain.BookDomain.Requests.AuthorRequest;
+import org.zeep.library.domain.AuthorDomain.Response.AuthorResponse;
+import org.zeep.library.domain.AuthorDomain.Request.AuthorRequest;
 import org.zeep.library.model.Author;
-import org.zeep.library.model.BookEditionModel;
 import org.zeep.library.model.BookModel;
 import org.zeep.library.repo.AuthorRepo;
 import org.zeep.library.repo.BookRepo;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -23,30 +24,31 @@ public class AuthorService {
         this.bookRepo = bookRepo;
     }
 
-    public Author create(AuthorRequest request) {
-        Author author = Author.builder().id(UUID.randomUUID())
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .initial(request.getInitial())
-                .build();
-        return repo.save(author);
+    public AuthorResponse getAuthor() {
+        Author author = repo.findByFirstNameAndLastName("Chimamanda", "Adichie");
+        return AuthorResponse.builder().body(author).responseCode(HttpStatus.OK.value())
+                .message("Here it is").build();
+    }
+
+    public Set<Author> create(Set<AuthorRequest> request) {
+        Set<Author> authors = new HashSet<>();
+        for (AuthorRequest fauthor: request) {
+            Author author = repo.findByFirstNameAndLastName(fauthor.getFirstName(), fauthor.getLastName());
+            if (author != null) {
+                authors.add(author);
+            } else {
+                author = repo.save(Author.builder().id(UUID.randomUUID())
+                        .firstName(fauthor.getFirstName())
+                        .lastName(fauthor.getLastName())
+                        .initial(fauthor.getInitial())
+                        .build());
+                authors.add(author);
+            }
+        }
+        return authors;
     }
 
     public Author addBook(BookModel book, AuthorRequest request) {
-        Author author = repo.findByFirstNameAndLastName(request.getFirstName(), request.getLastName());
-        List<BookModel> books = author.getBooks();
-        books.add(book);
-        author.setBooks(books);
-        return repo.save(author);
+        return new Author();
     }
-
-//    public Author addEdition(BookEditionModel book, AuthorRequest request, UUID id) {
-//        Author author = repo.findByFirstNameAndLastName(request.getFirstName(), request.getLastName());
-//        BookModel book1 = author.getBook(id);
-//
-//        List<BookEditionModel> editions = book1.getEditions();
-//        editions.add(book);
-//        book1.setEditions(editions);
-//
-//    }
 }

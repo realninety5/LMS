@@ -2,17 +2,14 @@ package org.zeep.library.model;
 
 
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 
-//@SuperBuilder
-@Entity @Getter @Setter @AllArgsConstructor @NoArgsConstructor @Builder
+@Entity @Getter @Setter @AllArgsConstructor @NoArgsConstructor @Builder @Table(name = "edition")
 //@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class BookEditionModel {
 
@@ -33,7 +30,7 @@ public class BookEditionModel {
     private String publisher;
 
     @Column(name = "published")
-    private Date published;
+    private String published;
 
     @Column(name = "num_of_pages")
     private int numOfPages;
