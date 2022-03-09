@@ -37,10 +37,11 @@ public class AuthorService {
             if (author != null) {
                 authors.add(author);
             } else {
-                author = repo.save(Author.builder().id(UUID.randomUUID())
+                author = repo.save(Author.builder()
                         .firstName(fauthor.getFirstName())
                         .lastName(fauthor.getLastName())
                         .initial(fauthor.getInitial())
+                        .books(new HashSet<>())
                         .build());
                 authors.add(author);
             }

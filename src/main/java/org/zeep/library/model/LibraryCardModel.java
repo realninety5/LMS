@@ -18,6 +18,12 @@ public class LibraryCardModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
     @Column(name = "issued_date")
     private Date issuedDate;
 
@@ -43,11 +49,8 @@ public class LibraryCardModel {
         calendar.setTime(issuedDate);
         int month = calendar.get(Calendar.MONTH), new_month;
         int year = calendar.get(Calendar.YEAR);
-        System.out.println(month);
-        System.out.println(year+" Years");
         if ((month+6) > 11) {
             new_month = (month + 6) % 12;
-            System.out.println(new_month+" inna month");
             if ((new_month + 6) < month) {
                 year = calendar.get(Calendar.YEAR);
                 year += 1;

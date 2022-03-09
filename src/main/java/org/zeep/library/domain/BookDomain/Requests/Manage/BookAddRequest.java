@@ -1,4 +1,4 @@
-package org.zeep.library.domain.BookDomain.Requests;
+package org.zeep.library.domain.BookDomain.Requests.Manage;
 
 
 import lombok.*;
@@ -42,7 +42,7 @@ public class BookAddRequest {
     @NotEmpty(message = "please enter the publisher's name")
     private String publisher;
 
-    @NotNull(message = "Please enter the date the bok was published.")
+    @NotNull(message = "Please enter the year the book was published.")
     private String published;
 
     @NotNull(message = "Please enter the number of pages in the book.")

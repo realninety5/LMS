@@ -3,6 +3,7 @@ package org.zeep.library.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 import org.zeep.library.enums.Genre;
 
 import javax.persistence.*;
@@ -16,6 +17,9 @@ import java.util.UUID;
 @Entity @Table(name = "book")//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class BookModel {
 
+//    @GeneratedValue(generator = "UUID")
+//    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -27,14 +31,15 @@ public class BookModel {
     @ManyToMany(mappedBy = "books", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)//(targetEntity = Author.class)
     private Set<Author> author = new HashSet<>();
 
-    @Column(name = "genre")
-    private Genre genre;
-
     @Column(name = "desc")
     private String desc;
 
+    @ManyToOne
+    @JoinColumn(name = "year_id")
+    private GenreModel genre;
+
     @OneToMany(targetEntity = BookEditionModel.class)
-    private List<BookEditionModel> editions;
+    private Set<BookEditionModel> editions = new HashSet<>();
 
     public BookEditionModel getEdition(String edition) {
         for (BookEditionModel editionF: editions) {

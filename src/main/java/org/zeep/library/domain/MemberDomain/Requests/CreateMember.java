@@ -51,7 +51,7 @@ public class CreateMember extends LibrarianCreateRequest{
     private AccountType accountType;
 
     @NotNull(message = "Enter your address.")
-    private AddressRequests address;
+    private AddressRequest address;
 
     public int getAge() {
         return Period.between(dob, LocalDate.now()).getYears();

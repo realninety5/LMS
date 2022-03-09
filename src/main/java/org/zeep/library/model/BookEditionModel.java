@@ -1,23 +1,26 @@
 package org.zeep.library.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
-
+@JsonIgnoreProperties("availBooks")
 @Entity @Getter @Setter @AllArgsConstructor @NoArgsConstructor @Builder @Table(name = "edition")
 //@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class BookEditionModel {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @Column(name = "edition")
     private String edition;
+
+    @Column(name = "book_id")
+    private UUID bookId;
 
     // @param: value to encode(isbn), format(qrcode), width, height
     @Column(name = "barcode") @Lob
@@ -35,11 +38,15 @@ public class BookEditionModel {
     @Column(name = "num_of_pages")
     private int numOfPages;
 
-    @OneToMany(targetEntity = BookItemModel.class)
-    private List<BookItemModel> allBooks;
+    @ManyToOne
+    @JoinColumn(name = "year_id")//, nullable = false)
+    private BookByYear year;
 
-    public List<BookItemModel> getAllBooks() {
-        List<BookItemModel> avail = new ArrayList<>();
+    @OneToMany(targetEntity = BookItemModel.class)
+    private Set<BookItemModel> allBooks = new HashSet<>();
+
+    public Set<BookItemModel> getAvailBooks() {
+        Set<BookItemModel> avail = new HashSet<>();
         for (BookItemModel book: this.allBooks){
             if (book.isAvailable()){
                 avail.add(book);

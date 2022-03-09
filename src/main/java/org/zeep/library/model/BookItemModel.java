@@ -12,6 +12,7 @@ import java.util.UUID;
 public class BookItemModel {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     // Starts from 1000

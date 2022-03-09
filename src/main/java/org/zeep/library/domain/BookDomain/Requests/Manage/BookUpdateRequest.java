@@ -1,4 +1,4 @@
-package org.zeep.library.domain.BookDomain.Requests;
+package org.zeep.library.domain.BookDomain.Requests.Manage;
 
 import lombok.*;
 import org.zeep.library.Exceptions.validators.ValueOfEnum;

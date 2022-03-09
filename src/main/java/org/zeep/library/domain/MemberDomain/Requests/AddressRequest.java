@@ -14,7 +14,7 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 @Setter
 @Getter
-public class AddressRequests {
+public class AddressRequest {
 
     @ValueOfEnum(enumClass = State.class)
     @NotNull(message = "Choose one of the provided states.")

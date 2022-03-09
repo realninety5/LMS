@@ -13,7 +13,7 @@ import java.util.UUID;
 @Entity @Table(name = "author") @NoArgsConstructor @AllArgsConstructor
 @Setter @Getter @Builder
 public class Author {
-    @Id
+    @Id  @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     @Column(name = "firstname")

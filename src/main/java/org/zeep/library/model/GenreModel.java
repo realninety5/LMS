@@ -5,6 +5,7 @@ import org.zeep.library.enums.Genre;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "genre") @NoArgsConstructor
@@ -19,6 +20,6 @@ public class GenreModel {
     @Column(name = "genre")
     private Genre genre;
 
-    @OneToMany(targetEntity = BookItemModel.class)
-    private List<BookItemModel> books;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "genre")
+    private Set<BookModel> books;
 }

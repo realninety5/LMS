@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "year") @NoArgsConstructor
@@ -20,6 +21,6 @@ public class BookByYear {
     @Column(name = "year")
     private String year;
 
-    @OneToMany(targetEntity = BookItemModel.class)
-    private List<BookItemModel> books;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "year")
+    private Set<BookEditionModel> books;
 }

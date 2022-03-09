@@ -5,9 +5,13 @@ import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
+import java.util.UUID;
 
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor @Builder
 public class PasswordChangeRequest {
+
+    @NotEmpty(message = "Enter the memberId")
+    private UUID memberId;
 
     @NotEmpty(message = "Please enter your old password.")
     @Pattern(regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\\w\\s]).{8,}$",

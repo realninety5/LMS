@@ -11,9 +11,11 @@ import java.util.Date;
 
 @Data @AllArgsConstructor
 public class LibraryCardGenerator {
-    public LibraryCardModel create(AccountType accountType) {
+    public LibraryCardModel create(AccountType accountType, String firstName, String lastName) {
         LibraryCardModel card = LibraryCardModel.builder()
                 .issuedDate(new Date()).accountType(accountType)
+                .firstName(firstName)
+                .lastName(lastName)
                 .build();
         card.setExpDate(card.getExpDate());
         return card;

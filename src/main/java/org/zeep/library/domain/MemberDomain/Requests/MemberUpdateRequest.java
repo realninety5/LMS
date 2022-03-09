@@ -5,6 +5,8 @@ import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.util.UUID;
 
 
 @Builder
@@ -12,12 +14,13 @@ import javax.validation.constraints.NotNull;
 @Getter
 public class MemberUpdateRequest {
 
+    @NotEmpty(message = "Enter the memberId")
+    private UUID memberId;
+
     @NotEmpty(message = "Enter your first name.")
     private String firstName;
 
     @NotEmpty(message = "Enter your last name.")
     private String lastName;
 
-    @NotEmpty(message = "Enter your username.")
-    private String username;
 }
