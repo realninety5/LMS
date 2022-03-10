@@ -1,6 +1,5 @@
 package org.zeep.library.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
@@ -38,6 +37,7 @@ public class BookEditionModel {
     @Column(name = "num_of_pages")
     private int numOfPages;
 
+    @JsonIgnoreProperties("books")
     @ManyToOne
     @JoinColumn(name = "year_id")//, nullable = false)
     private BookByYear year;

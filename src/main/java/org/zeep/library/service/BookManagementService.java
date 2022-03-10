@@ -4,18 +4,10 @@ package org.zeep.library.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.zeep.library.domain.BookDomain.Requests.Manage.BookAddRequest;
-import org.zeep.library.domain.BookDomain.Requests.Manage.EditionAddRequest;
-import org.zeep.library.domain.BookDomain.Requests.Manage.ItemAddRequest;
+import org.zeep.library.domain.BookDomain.Requests.Manage.*;
 import org.zeep.library.domain.BookDomain.Responses.BookResponse;
-import org.zeep.library.model.Author;
-import org.zeep.library.model.BookEditionModel;
-import org.zeep.library.model.BookItemModel;
-import org.zeep.library.model.BookModel;
-import org.zeep.library.repo.AuthorRepo;
-import org.zeep.library.repo.BookEditionRepo;
-import org.zeep.library.repo.BookItemRepo;
-import org.zeep.library.repo.BookRepo;
+import org.zeep.library.model.*;
+import org.zeep.library.repo.*;
 
 import java.util.*;
 
@@ -25,7 +17,6 @@ public class BookManagementService {
     private final BookRepo repo;
     private final BookItemRepo itemRepo;
     private final BookEditionRepo editionRepo;
-    private final AuthorRepo authorRepo;
     @Autowired
     AuthorService authorService;
     @Autowired YearService yearService;
@@ -36,7 +27,6 @@ public class BookManagementService {
         this.repo = repo;
         this.itemRepo = itemRepo;
         this.editionRepo = editionRepo;
-        this.authorRepo = authorRepo;
     }
 
 
@@ -76,12 +66,16 @@ public class BookManagementService {
         BookModel book = BookModel.builder()
                 .bookName(request.getBookName())//request.getGenre())
                 .author(authors)
+//                .genre(request.getGenre())
                 .desc(request.getDesc())
                 .build();
         book.setEditions(editions);
 
         book.setGenre(genreService.create(request.getGenre(), book));
         BookModel newBook = repo.save(book);
+
+        // sets the editionId of the book item for retrieval when a book is reserved
+        item.setEditionId(edition.getId());
         // sets the bookId in the edition entity for easy retrieval for getBooksByYear
         edition.setBookId(book.getId());
         // this calls the author service to update each of the authors' book's set
@@ -96,6 +90,7 @@ public class BookManagementService {
     }
 
     public BookResponse getBook(UUID id) {
+        // get a particular book and return it
         Optional<BookModel> book = repo.findById(id);
         BookModel book1 = null;
         if (book.isPresent()) {
@@ -139,6 +134,10 @@ public class BookManagementService {
         edition.getAllBooks().add(itemRepo.save(item));
 
         book.getEditions().add(editionRepo.save(edition));
+        // sets the editionId of the book item for retrieval when a book is reserved
+        item.setEditionId(edition.getId());
+        // sets the bookId in the edition entity for easy retrieval for getBooksByYear
+        edition.setBookId(book.getId());
 
         return BookResponse.builder().body(book).responseCode(HttpStatus.CREATED.value())
                 .message("Book added successfully.").build();
@@ -170,10 +169,17 @@ public class BookManagementService {
 
         edition.getAllBooks().add(itemRepo.save(item));
 
+        // sets the editionId of the book item for retrieval when a book is reserved
+        item.setEditionId(edition.getId());
+
 //        book.getEditions().stream()
 //                .filter(ed -> ed.getId().compareTo(request.getEditionId())).findFirst();
         return BookResponse.builder().body(null).responseCode(HttpStatus.NOT_FOUND.value())
                 .message("No such book, add the book first.").build();
+    }
+
+    public void removeBookItem() {
+
     }
 
     public void editBook() {

@@ -9,17 +9,11 @@ import org.zeep.library.config.LibraryCardGenerator;
 import org.zeep.library.domain.MemberDomain.Requests.*;
 import org.zeep.library.domain.MemberDomain.Responses.MemberResponse;
 import org.zeep.library.enums.Status;
-import org.zeep.library.model.Address;
-import org.zeep.library.model.LibraryCardModel;
-import org.zeep.library.model.MemberModel;
+import org.zeep.library.model.*;
 import org.zeep.library.model.inheritance.Account;
-import org.zeep.library.repo.LibrarianRepo;
-import org.zeep.library.repo.MemberRepository;
+import org.zeep.library.repo.*;
 
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
-
+import java.util.*;
 @Service
 public class MemberService {
 
@@ -32,9 +26,11 @@ public class MemberService {
     }
 
     public MemberResponse create(CreateMember request) {
+        // create an address object from the user's response
         Address address = Address.builder().city(request.getAddress().getCity())
                 .state(request.getAddress().getState()).zipcode(request.getAddress().getZipcode())
                 .street(request.getAddress().getStreet()).build();
+        // create the member model, and add the address to it
         MemberModel model = MemberModel.builder().accountType(request.getAccountType())
                 .date_reg(new Date())
                 .id(UUID.randomUUID())
@@ -50,8 +46,10 @@ public class MemberService {
                 .accountType(request.getAccountType())
                 .status(Status.Active)
                 .build();
+        // call the library card generator to generate a library card for the new member
         model.setLibraryCard(cardGenerator.create(model.getAccountType(),
                 model.getFirstName(), model.getLastName()));
+        // save and return
         MemberModel m = this.memberRepo.save(model);
         return MemberResponse.builder().body(m).responseCode(HttpStatus.CREATED.value())
                 .message("Created").build();
@@ -68,12 +66,15 @@ public class MemberService {
                     .message("Member not found").build();
         }
 
-        if (!request.getNewPassword().equalsIgnoreCase(request.getNewPassword2())) {
+        // check if the first password matches the second password
+        if (!(request.getNewPassword().equalsIgnoreCase(request.getNewPassword2())
+        && encoder.matches(request.getOldPassword(), m.getPassword()))) {
             return MemberResponse.builder().body(null).
                     responseCode(HttpStatus.FORBIDDEN.value())
                     .message("Passwords do not match.").build();
         }
 
+        // set and return
         m.setPassword(encoder.encode(request.getNewPassword()));
         return MemberResponse.builder().body(memberRepo.save(m))
                 .responseCode(HttpStatus.OK.value())
@@ -91,6 +92,7 @@ public class MemberService {
                     .message("Member not found").build();
         }
 
+        // update the members details with the provided details
         m.setFirstName(request.getFirstName());
         m.setLastName(request.getLastName());
         m.getLibraryCard().setFirstName(request.getFirstName());
@@ -111,6 +113,7 @@ public class MemberService {
                     responseCode(HttpStatus.FORBIDDEN.value())
                     .message("Member not found").build();
         }
+        // set, save and return the updated member
         m.setUsername(request.getUsername());
         return MemberResponse.builder().body(memberRepo.save(m))
                 .responseCode(HttpStatus.OK.value())
@@ -127,6 +130,7 @@ public class MemberService {
                     responseCode(HttpStatus.FORBIDDEN.value())
                     .message("Member not found").build();
         }
+        // set, save and return the updated member
         m.setEmail(request.getEmail());
         return MemberResponse.builder().body(memberRepo.save(m))
                 .responseCode(HttpStatus.OK.value())
@@ -143,6 +147,7 @@ public class MemberService {
                     responseCode(HttpStatus.FORBIDDEN.value())
                     .message("Member not found").build();
         }
+        // set, save and return the updated member
         Address address = Address.builder().state(request.getAddress().getState())
                 .city(request.getAddress().getCity())
                 .zipcode(request.getAddress().getZipcode())

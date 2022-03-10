@@ -10,9 +10,7 @@ import org.zeep.library.model.BookModel;
 import org.zeep.library.repo.AuthorRepo;
 import org.zeep.library.repo.BookRepo;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class AuthorService {
@@ -30,9 +28,11 @@ public class AuthorService {
                 .message("Here it is").build();
     }
 
-    public Set<Author> create(Set<AuthorRequest> request) {
+    public Set<Author> create(Set<AuthorRequest> theAuthors) {
         Set<Author> authors = new HashSet<>();
-        for (AuthorRequest fauthor: request) {
+        // loop through the provided authors, get their books and add this book to it
+        // if the author does not exist, create a new one and add the books
+        for (AuthorRequest fauthor: theAuthors) {
             Author author = repo.findByFirstNameAndLastName(fauthor.getFirstName(), fauthor.getLastName());
             if (author != null) {
                 authors.add(author);

@@ -20,11 +20,14 @@ public class GenreService {
 
 
     public GenreModel create(Genre genreValue, BookModel book) {
+
+        // get the genre from the db, create one if it doesn't exist
+        // get its books and add the bookModel to it
         GenreModel model = repo.findByGenre(genreValue);
         if (model == null) {
-            GenreModel genre = GenreModel.builder().genre(genreValue)
-                    .books(new HashSet<>()).build();
-            genre.getBooks().add(book);
+            model = repo.save(GenreModel.builder().genre(genreValue)
+                    .books(new HashSet<>()).build());
+            model.getBooks().add(book);
         } else {
             model.getBooks().add(book);
         }

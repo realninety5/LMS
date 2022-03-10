@@ -34,6 +34,7 @@ public class BookModel {
     @Column(name = "desc")
     private String desc;
 
+    @JsonIgnoreProperties("books")
     @ManyToOne
     @JoinColumn(name = "year_id")
     private GenreModel genre;

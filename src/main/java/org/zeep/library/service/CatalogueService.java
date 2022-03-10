@@ -26,6 +26,7 @@ public class CatalogueService {
     }
 
     public CatalogueResponse getBooksByAuthor(AuthorRequest request) {
+        // this method gets all the books written by a particular author
         Author author1 = authorRepo.findByFirstNameAndLastName(request.getFirstName(), request.getLastName());
         return CatalogueResponse.builder().responseCode(HttpStatus.OK.value())
                 .message("Here are the books by "+ request.getFirstName())
@@ -34,12 +35,15 @@ public class CatalogueService {
     }
 
     public CatalogueResponse getBookByYear(BookByYearRequest request) {
+        // this method gets all the editions published in a year
         BookByYear year1 = yearRepo.findByYear(request.getYear());
         Set<BookModel> books = new HashSet<>();
         for (BookEditionModel edition : year1.getBooks()) {
+            // get the books (parent) of these editions
             Optional<BookModel> b = bookRepo.findById(edition.getBookId());
             books.add(b.orElse(new BookModel()));
         }
+        // add the books to a set and return it.
         return CatalogueResponse.builder().responseCode(HttpStatus.OK.value())
                 .message("Here are the books by "+ request.getYear())
                 .responseCode(HttpStatus.OK.value())
@@ -47,6 +51,7 @@ public class CatalogueService {
     }
 
     public CatalogueResponse getBookByGenre(BookByGenreRequest request) {
+        // find all the books in a geenre and return it
         GenreModel model = genreRepo.findByGenre(request.getGenre());
         return CatalogueResponse.builder().books(model.getBooks())
                 .responseCode(HttpStatus.OK.value())

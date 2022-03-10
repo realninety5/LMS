@@ -15,6 +15,9 @@ public class BookItemModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @Column(name = "edition_id")
+    private UUID editionId;
+
     // Starts from 1000
     @Column(name = "position")
     private String position;

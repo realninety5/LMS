@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -43,9 +44,9 @@ public class MemberModel extends Account {
     @JoinColumn(name = "library_card_id", referencedColumnName = "id")
     private LibraryCardModel libraryCard;
 
-    @OneToMany(targetEntity = BookItemModel.class)
-    private List<BookItemModel> booksBorrowed;
+    @OneToMany(mappedBy = "borrowedBooks", fetch = FetchType.EAGER) // must not have more than 3 books
+    private Set<BooksBorrowed> borrowedBooks;
 
-    @OneToMany(targetEntity = ReservationModel.class)
-    private List<ReservationModel> reserves;
+    @OneToMany(mappedBy = "reservedBy", fetch = FetchType.EAGER) // must not have more than 3 books
+    private Set<ReservationModel> reservedBooks;
 }

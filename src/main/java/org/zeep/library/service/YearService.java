@@ -17,15 +17,19 @@ public class YearService {
     }
 
     public BookByYear create(String yearValue, BookEditionModel edition) {
-        BookByYear year1 = repo.findByYear(yearValue);
-        if (year1 == null) {
-            BookByYear year = BookByYear.builder().year(yearValue)
-                    .books(new HashSet<>()).build();
+
+        // get the year from the db, create one if it doesn't exist
+        // get its books and add this edition to it, since each edition has it own year
+        // the books uuid code is also saved to the year class, this can be used to get the parent book itself.
+        BookByYear year = repo.findByYear(yearValue);
+        if (year == null) {
+            year = repo.save(BookByYear.builder().year(yearValue)
+                    .books(new HashSet<>()).build());
             year.getBooks().add(edition);
         } else {
-            year1.getBooks().add(edition);
+            year.getBooks().add(edition);
         }
-        return year1;
+        return year;
     }
 
     public BookByYear getBookByYear(String yearValue) {
