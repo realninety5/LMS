@@ -21,12 +21,12 @@ public class BooksBorrowed {
 
         @OneToOne
         @JoinColumn(name = "books_borrowed_id", referencedColumnName = "id")
-        private BookModel book;
+        private BookItemModel bookItem;
 
         // one member cannot borrow more than 3 books at anytime
         @OneToOne
         @JoinColumn(name = "member_id", referencedColumnName = "id")
-        private MemberModel borrowedBooks;
+        private MemberModel borrowedBy;
 
         // The date it was borrowed
         @Column(name = "date")

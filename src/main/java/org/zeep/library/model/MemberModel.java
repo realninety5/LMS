@@ -8,9 +8,7 @@ import org.zeep.library.enums.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -30,8 +28,8 @@ public class MemberModel extends Account {
     @Column(name = "account_type")
     private AccountType accountType;
 
-    @Column(name = "books_borrowed")
-    private int booksBorrowedCount;
+//    @Column(name = "books_borrowed")
+//    private int booksBorrowedCount;
 
     @Column(name = "date_reg")
     private Date date_reg;
@@ -44,9 +42,9 @@ public class MemberModel extends Account {
     @JoinColumn(name = "library_card_id", referencedColumnName = "id")
     private LibraryCardModel libraryCard;
 
-    @OneToMany(mappedBy = "borrowedBooks", fetch = FetchType.EAGER) // must not have more than 3 books
-    private Set<BooksBorrowed> borrowedBooks;
+    @OneToMany(mappedBy = "borrowedBy", fetch = FetchType.EAGER) // must not have more than 3 books
+    private Set<BookItemModel> borrowedBooks;
 
     @OneToMany(mappedBy = "reservedBy", fetch = FetchType.EAGER) // must not have more than 3 books
-    private Set<ReservationModel> reservedBooks;
+    private Set<BookItemModel> reservedBooks;
 }

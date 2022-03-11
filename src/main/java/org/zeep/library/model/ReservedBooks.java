@@ -9,14 +9,14 @@ import java.util.*;
 @Entity
 @Table(name = "reservation")
 @NoArgsConstructor @AllArgsConstructor @Getter @Setter @Builder
-public class ReservationModel {
+public class ReservedBooks {
 
     @Id
     private UUID id;
 
     @OneToOne
     @JoinColumn(name = "books_reserved_id", referencedColumnName = "id")
-    private BookModel book;
+    private BookItemModel bookItem;
 
     @ManyToOne
     @JoinColumn(name = "member_id", referencedColumnName = "id")

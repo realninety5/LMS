@@ -34,13 +34,9 @@ public class BookItemModel {
     @Column(name = "date_added")
     private Date dateAdded;
 
-//    @OneToOne
-//    private BookModel book;
-//
-//    @OneToOne
-//    private BookEditionModel edition;
-
-    @OneToOne(fetch = FetchType.EAGER)//(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "member_id", referencedColumnName = "id")
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private MemberModel borrowedBy;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)//(cascade = CascadeType.ALL)
+    private MemberModel reservedBy;
 }
