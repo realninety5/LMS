@@ -76,6 +76,10 @@ public class BookService {
     }
 
     public void returnBook() {
-
+        // get the bookItem and the borrower
+//        Optional<Account> memberModel = memberRepo.findById(request.getMemberId());
+//        Optional<BookItemModel> bookItem = repo.findById(request.getBookId());
+//        MemberModel member = (MemberModel) memberModel.get();
+//        BookItemModel item = bookItem.get();
     }
 }
