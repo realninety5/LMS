@@ -9,7 +9,6 @@ import javax.validation.constraints.Pattern;
 import java.util.UUID;
 
 
-@Builder
 @AllArgsConstructor @NoArgsConstructor @Setter
 @Getter
 public class MemberUpdateRequest {

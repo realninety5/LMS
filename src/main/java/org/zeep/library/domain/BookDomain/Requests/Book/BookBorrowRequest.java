@@ -7,7 +7,6 @@ import javax.validation.constraints.NotEmpty;
 import java.util.UUID;
 
 //
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter

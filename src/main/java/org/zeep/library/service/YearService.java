@@ -23,10 +23,13 @@ public class YearService {
         // the books uuid code is also saved to the year class, this can be used to get the parent book itself.
         BookByYear year = repo.findByYear(yearValue);
         if (year == null) {
+            System.out.println("South SOuth" + year);
             year = repo.save(BookByYear.builder().year(yearValue)
                     .books(new HashSet<>()).build());
+            System.out.println("South SOuth" + year);
             year.getBooks().add(edition);
         } else {
+            System.out.println("north north" + year);
             year.getBooks().add(edition);
         }
         return year;

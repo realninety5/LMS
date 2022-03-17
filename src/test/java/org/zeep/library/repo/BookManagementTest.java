@@ -1,24 +1,27 @@
 package org.zeep.library.repo;
 
 
+import com.github.javafaker.Faker;
+import com.github.javafaker.service.FakeValuesService;
+import com.github.javafaker.service.RandomService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.annotation.SecurityTestExecutionListeners;
-import org.zeep.library.enums.Genre;
 import org.zeep.library.model.*;
 
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-class BookTest {
+class BookManagementTest {
 
     @Mock BookRepo bookRepo;
     @Mock BookItemRepo itemRepo;
@@ -78,5 +81,28 @@ class BookTest {
 
         assertNotNull(b);
         assertEquals("To Kill A Mockingbird", b.getBookName());
+    }
+
+    @Test
+    public void whenBothifyCalled_checkPatternMatches() throws Exception {
+
+        FakeValuesService fvs = new FakeValuesService(
+                new Locale("en-GB"), new RandomService());
+
+        String email = fvs.bothify("????##@gmail.com");
+        Matcher emailMatcher = Pattern.compile("\\w{4}@gmail.com").matcher(email);
+
+        System.out.println(email);
+        assertTrue(emailMatcher.find());
+
+        Faker fk = new Faker(new Locale("en-GB"));
+        System.out.println(fk.address().buildingNumber());
+        System.out.println(fk.address().streetName());
+        System.out.println(fk.address().city());
+        System.out.println(fk.address().country());
+        System.out.println(fk.name().firstName());
+        System.out.println(fk.name().lastName());
+        System.out.println(fk.regexify("\\w{8}\\d{2}")+"@gmail.com");
+        System.out.println(fk.address().country());
     }
 }

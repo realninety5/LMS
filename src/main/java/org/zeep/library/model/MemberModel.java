@@ -28,8 +28,8 @@ public class MemberModel extends Account {
     @Column(name = "account_type")
     private AccountType accountType;
 
-//    @Column(name = "books_borrowed")
-//    private int booksBorrowedCount;
+    @Column(name = "books_borrowed")
+    private int booksBorrowedCount;
 
     @Column(name = "date_reg")
     private Date date_reg;

@@ -6,7 +6,7 @@ import lombok.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.UUID;
 
-@Setter @Getter @AllArgsConstructor @Builder
+@Setter @Getter @AllArgsConstructor
 public class LibrarianUpdateRequest {
     @NotEmpty(message = "Enter the memberId")
     private UUID librarianId;

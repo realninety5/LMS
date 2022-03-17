@@ -9,7 +9,6 @@ import java.util.UUID;
 @Setter
 @Getter
 @AllArgsConstructor
-@Builder
 
 public class LibrarianPasswordChange {
     @NotEmpty(message = "Enter the memberId")

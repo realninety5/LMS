@@ -11,5 +11,5 @@ import java.util.UUID;
 @NoArgsConstructor
 public class BookGetRequest {
     @NotEmpty(message = "Enter the book's id, please")
-    private UUID id;
+    private UUID bookId;
 }

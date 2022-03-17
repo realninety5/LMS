@@ -7,7 +7,6 @@ import org.zeep.library.enums.Genre;
 
 import javax.validation.constraints.*;
 
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter

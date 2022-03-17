@@ -2,6 +2,8 @@ package org.zeep.library.service;
 
 
 import org.springframework.stereotype.Service;
+import org.zeep.library.DTO.NotifyEntity;
+import org.zeep.library.config.NotificationHandler;
 import org.zeep.library.domain.BookDomain.Requests.Book.*;
 import org.zeep.library.model.*;
 import org.zeep.library.model.inheritance.Account;
@@ -17,6 +19,7 @@ public class BookService {
     final private MemberRepository memberRepo;
     final private BorrowedBooksRepo borrowedRepo;
     final private ReservedBooksRepo reservedRepo;
+    private final NotificationHandler notification = new NotificationHandler();
 
     public BookService(BookItemRepo repo, MemberRepository memberRepo, BorrowedBooksRepo borrowedRepo, ReservedBooksRepo reservedRepo) {
         this.repo = repo;
@@ -46,6 +49,7 @@ public class BookService {
         //member.setBooksBorrowedCount(member.getBooksBorrowedCount()+1);
         item.setAvailable(false);
         member.getBorrowedBooks().add(item);
+        member.setBooksBorrowedCount(member.getBooksBorrowedCount()+1);
 
         item.setBorrowedBy(member);
         item.setBorrowedDate(new Date());
@@ -63,11 +67,13 @@ public class BookService {
             // the book has already been reserved
             // the member has already reserved more than 3 books
         }
+
         // set it up as reserved
         ReservedBooks reserved = new ReservedBooks();
         reserved.setReservedBy(member);
         reserved.setDate(new Date());
         reserved.setBookItem(item);
+        reservedRepo.save(reserved);
         // add the book to the books the member has reserved
         member.getReservedBooks().add(item);
         item.setReserved(true);
@@ -75,11 +81,27 @@ public class BookService {
 
     }
 
-    public void returnBook() {
+    public boolean returnBook(BookReturnRequest request) {
         // get the bookItem and the borrower
-//        Optional<Account> memberModel = memberRepo.findById(request.getMemberId());
-//        Optional<BookItemModel> bookItem = repo.findById(request.getBookId());
-//        MemberModel member = (MemberModel) memberModel.get();
-//        BookItemModel item = bookItem.get();
+        Optional<Account> memberModel = memberRepo.findById(request.getMemberId());
+        Optional<BookItemModel> bookItem = repo.findById(request.getBookId());
+        MemberModel member = (MemberModel) memberModel.get();
+        BookItemModel item = bookItem.get();
+        if (!(member.getId().compareTo(request.getMemberId()) == 0 &&
+        item.getId().compareTo(request.getBookId()) == 0)) {
+            return false;
+        }
+        // reset the bookItem values
+        item.setAvailable(true);
+        item.setBorrowedDate(null);
+        item.setBorrowedBy(null);
+
+        // reset the member values
+        member.getBorrowedBooks().remove(item);
+        if (item.isReserved()) {
+            NotifyEntity entity = new NotifyEntity(request.getBookId(), request.getMemberId());
+            notification.notify(entity);
+        }
+        return true;
     }
 }

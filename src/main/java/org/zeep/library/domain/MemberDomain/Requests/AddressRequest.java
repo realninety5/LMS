@@ -5,12 +5,8 @@ import lombok.*;
 import org.zeep.library.Exceptions.validators.ValueOfEnum;
 import org.zeep.library.enums.State;
 
-import javax.persistence.Column;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 
-@Builder
 @AllArgsConstructor
 @Setter
 @Getter

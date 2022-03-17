@@ -7,7 +7,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-@NoArgsConstructor @AllArgsConstructor @SuperBuilder
+@NoArgsConstructor @AllArgsConstructor
 @Data
 public class LibrarianCreateRequest {
 

@@ -7,7 +7,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import java.util.UUID;
 
-@Getter @Setter @AllArgsConstructor @NoArgsConstructor @Builder
+@Getter @Setter @AllArgsConstructor @NoArgsConstructor
 public class PasswordChangeRequest {
 
     @NotEmpty(message = "Enter the memberId")

@@ -12,7 +12,6 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 @Setter
 @Getter
-@Builder
 public class BookByGenreRequest {
     @NotEmpty(message = "Please choose a genre.")
     @ValueOfEnum(enumClass = Genre.class)

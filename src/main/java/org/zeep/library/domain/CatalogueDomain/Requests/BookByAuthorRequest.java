@@ -7,7 +7,6 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 @Setter
 @Getter
-@Builder
 
 public class BookByAuthorRequest {
     @NotEmpty(message = "Please enter the author's firstName.")

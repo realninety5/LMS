@@ -9,14 +9,12 @@ import org.zeep.library.enums.Genre;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
+@Builder
 @Getter
 public class BookAddRequest {
 

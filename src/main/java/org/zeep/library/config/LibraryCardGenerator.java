@@ -1,8 +1,7 @@
 package org.zeep.library.config;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import org.zeep.library.enums.AccountType;
 import org.zeep.library.model.LibraryCardModel;

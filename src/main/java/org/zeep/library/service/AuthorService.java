@@ -15,11 +15,9 @@ import java.util.*;
 @Service
 public class AuthorService {
     private final AuthorRepo repo;
-    private final BookRepo bookRepo;
 
-    public AuthorService(AuthorRepo repo, BookRepo bookRepo) {
+    public AuthorService(AuthorRepo repo) {
         this.repo = repo;
-        this.bookRepo = bookRepo;
     }
 
     public AuthorResponse getAuthor() {

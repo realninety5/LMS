@@ -6,7 +6,7 @@ import lombok.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.UUID;
 
-@AllArgsConstructor @Builder @Getter @Setter
+@AllArgsConstructor @Getter @Setter
 public class ChangeUsername {
 
     @NotEmpty(message = "Enter the memberId")

@@ -22,8 +22,8 @@ public class BookManagementService {
     @Autowired YearService yearService;
     @Autowired GenreService genreService;
     static String position = "1000";
-    public BookManagementService(BookRepo repo, BookItemRepo itemRepo, BookEditionRepo editionRepo,
-                                 AuthorRepo authorRepo) {
+
+    public BookManagementService(BookRepo repo, BookItemRepo itemRepo, BookEditionRepo editionRepo) {
         this.repo = repo;
         this.itemRepo = itemRepo;
         this.editionRepo = editionRepo;

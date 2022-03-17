@@ -46,7 +46,7 @@ public class BookManagementController {
 
     @GetMapping("")
     public ResponseEntity<BookResponse> getBook(@Valid @RequestBody BookGetRequest request) {
-        BookResponse response = service.getBook(request.getId());
+        BookResponse response = service.getBook(request.getBookId());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
