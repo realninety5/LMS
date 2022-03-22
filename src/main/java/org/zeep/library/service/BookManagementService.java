@@ -1,7 +1,6 @@
 package org.zeep.library.service;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.zeep.library.domain.BookDomain.Requests.Manage.*;
@@ -17,18 +16,21 @@ public class BookManagementService {
     private final BookRepo repo;
     private final BookItemRepo itemRepo;
     private final BookEditionRepo editionRepo;
-    @Autowired
-    AuthorService authorService;
-    @Autowired YearService yearService;
-    @Autowired GenreService genreService;
+//    @Autowired
+    private final AuthorService authorService;
+//    @Autowired
+    private final YearService yearService;
+    private final GenreService genreService;
     static String position = "1000";
 
-    public BookManagementService(BookRepo repo, BookItemRepo itemRepo, BookEditionRepo editionRepo) {
+    public BookManagementService(BookRepo repo, BookItemRepo itemRepo, BookEditionRepo editionRepo, AuthorService authorService, YearService yearService, GenreService genreService) {
         this.repo = repo;
         this.itemRepo = itemRepo;
         this.editionRepo = editionRepo;
+        this.authorService = authorService;
+        this.yearService = yearService;
+        this.genreService = genreService;
     }
-
 
     public BookResponse addBook(BookAddRequest request) {
 
@@ -44,7 +46,6 @@ public class BookManagementService {
                 .isbn(request.getIsbn())
                 .numOfPages(request.getNumOfPages())
                 .published(request.getPublished())
-//                .allBooks(Collections.singletonList(itemRepo.save(item)))
                 .edition(request.getEdition())
                 .build();
 
@@ -64,13 +65,13 @@ public class BookManagementService {
         // create a new set and add all the authors that contributed to this book
         Set<Author> authors = authorService.create(request.getAuthor());
         BookModel book = BookModel.builder()
-                .bookName(request.getBookName())//request.getGenre())
+                .bookName(request.getBookName())
                 .author(authors)
-//                .genre(request.getGenre())
                 .desc(request.getDesc())
                 .build();
         book.setEditions(editions);
 
+        // sets the book's genre
         book.setGenre(genreService.create(request.getGenre(), book));
         BookModel newBook = repo.save(book);
 
@@ -80,8 +81,6 @@ public class BookManagementService {
         edition.setBookId(book.getId());
         // this calls the author service to update each of the authors' book's set
         for (Author author: authors) {
-            Set<BookModel> bookModelSet = author.getBooks();
-
             author.getBooks().add(newBook);
         }
 
@@ -95,6 +94,9 @@ public class BookManagementService {
         BookModel book1 = null;
         if (book.isPresent()) {
             book1 = book.get();
+        } else {
+            return BookResponse.builder().body(book1).message("No such book, dude.")
+                    .responseCode(HttpStatus.NOT_FOUND.value()).build();
         }
         return BookResponse.builder().body(book1).message("Have it boy.")
                 .responseCode(HttpStatus.OK.value()).build();
@@ -145,15 +147,6 @@ public class BookManagementService {
 
     public BookResponse addItem(ItemAddRequest request) {
 
-//        Optional<BookModel> book1 = repo.findById(request.getBookId());
-//        BookModel book;
-//        if (book1.isPresent()) {
-//            book = book1.get();
-//        } else {
-//            return BookResponse.builder().body(null).responseCode(HttpStatus.NOT_FOUND.value())
-//                    .message("No such book, add the book first.").build();
-//        }
-
         Optional<BookEditionModel> edition1 = editionRepo.findById(request.getEditionId());
         BookEditionModel edition;
         if (edition1.isPresent()) {
@@ -174,8 +167,8 @@ public class BookManagementService {
 
 //        book.getEditions().stream()
 //                .filter(ed -> ed.getId().compareTo(request.getEditionId())).findFirst();
-        return BookResponse.builder().body(null).responseCode(HttpStatus.NOT_FOUND.value())
-                .message("No such book, add the book first.").build();
+        return BookResponse.builder().body(null).responseCode(HttpStatus.CREATED.value())
+                .message("Book has been added to the library.").build();
     }
 
     public void removeBookItem() {

@@ -22,7 +22,6 @@ import static org.mockito.ArgumentMatchers.refEq;
 import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
-@SpringBootTest
 class YearServiceTest {
 
     @InjectMocks YearService service;
@@ -35,12 +34,12 @@ class YearServiceTest {
 
     @BeforeEach
     void setUp() {
-        service = new YearService(repo);
+        this.service = new YearService(repo);
         editions.add(model);
         //editions.add(new BookEditionModel());
         year.setBooks(editions);
-        lenient().when(repo.save(year)).thenReturn(year);
-        lenient().when(repo.findByYear("2006")).thenReturn(year);
+        lenient().when(this.repo.save(year)).thenReturn(year);
+        lenient().when(this.repo.findByYear("2006")).thenReturn(year);
     }
 
     @AfterEach
@@ -49,13 +48,13 @@ class YearServiceTest {
 
     @Test
     void create() {
-        BookByYear byYear = service.create("2006", model);
+        BookByYear byYear = this.service.create("2006", model);
         assertEquals("2006", byYear.getYear());
     }
 
     @Test
     void getBookByYear() {
-        BookByYear byYear = service.getBookByYear("2006");
+        BookByYear byYear = this.service.getBookByYear("2006");
         System.out.println(byYear.getBooks().size());
         for (BookEditionModel edition: byYear.getBooks()){
             assertEquals("1234567890", edition.getIsbn());

@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 import java.util.UUID;
 
 
-@Getter @Setter @AllArgsConstructor
+@Getter @Setter @AllArgsConstructor @Builder
 public class EditionAddRequest {
 
     @NotEmpty(message = "Enter the book's id.")

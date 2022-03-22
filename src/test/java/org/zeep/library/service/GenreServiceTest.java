@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.lenient;
 
 
-@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class GenreServiceTest {
 
@@ -35,12 +34,12 @@ class GenreServiceTest {
 
     @BeforeEach
     void setUp() {
-        service = new GenreService(repo);
+        this.service = new GenreService(repo);
         Set<BookModel> books = new HashSet<>();
         books.add(book);
         model.setBooks(books);
-        lenient().when(repo.save(model)).thenReturn(model);
-        lenient().when(repo.findByGenre(Genre.Art)).thenReturn(model);
+        lenient().when(this.repo.save(model)).thenReturn(model);
+        lenient().when(this.repo.findByGenre(Genre.Art)).thenReturn(model);
     }
 
     @AfterEach
@@ -49,14 +48,14 @@ class GenreServiceTest {
 
     @Test
     void create() {
-        GenreModel resp = service.create(Genre.Art, book);
+        GenreModel resp = this.service.create(Genre.Art, book);
         assertEquals(Genre.Art, resp.getGenre());
         assertEquals(1, resp.getBooks().size());
     }
 
     @Test
     void getBooksByGenre() {
-        GenreModel resp = service.getBooksByGenre(Genre.Art);
+        GenreModel resp = this.service.getBooksByGenre(Genre.Art);
         assertEquals(Genre.Art, resp.getGenre());
         assertEquals(1, resp.getBooks().size());
     }

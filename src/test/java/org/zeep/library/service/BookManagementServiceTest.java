@@ -5,9 +5,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.zeep.library.domain.AuthorDomain.Request.AuthorRequest;
 import org.zeep.library.domain.BookDomain.Requests.Manage.BookAddRequest;
+import org.zeep.library.domain.BookDomain.Requests.Manage.BookGetRequest;
+import org.zeep.library.domain.BookDomain.Requests.Manage.EditionAddRequest;
+import org.zeep.library.domain.BookDomain.Requests.Manage.ItemAddRequest;
 import org.zeep.library.domain.BookDomain.Responses.BookResponse;
 import org.zeep.library.enums.Genre;
 import org.zeep.library.model.*;
@@ -18,73 +20,95 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.lenient;
 
-@SpringBootTest
+//@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class BookManagementServiceTest {
 
     // Injects the needed services
     @InjectMocks private BookManagementService service;
-    @InjectMocks private YearService yearService;
-    @InjectMocks private GenreService genreService;
-    @InjectMocks private AuthorService authorService;
+
 
     // Mock the needed repos
     @Mock private BookItemRepo repoItem;
     @Mock private BookEditionRepo repoEdition;
     @Mock private BookRepo repo;
-    // External services
-    @Mock private BookYearRepo yearRepo;
-    @Mock private GenreRepo genreRepo;
-    @Mock private AuthorRepo authorRepo;
+    @Mock private AuthorService authorService;
+    @Mock private YearService yearService;
+    @Mock private GenreService genreService;
 
     // define some variables and assign values to them
     private final BookItemModel item = new BookItemModel();
     private final Set<BookItemModel> items = new HashSet<>();
     private final Set<BookEditionModel> editions = new HashSet<>();
 
+    // define the needed sets
+    private final Set<BookModel> books = new HashSet<>();
     private final Set<Author> authors = new HashSet<>();
+    private final Set<AuthorRequest> authorRequests = new HashSet<>();
+
+
     // year, genre, and author
     private final BookByYear year = BookByYear.builder().year("2006").id(1L).build();
     private final GenreModel genre = GenreModel.builder().id(1L).genre(Genre.Art).build();
     private final Author author = Author.builder().firstName("Chimamanda").lastName("Adichie")
             .build();
     // build the book, edition models
-    private final BookModel model = BookModel.builder().id(UUID.randomUUID()).desc("The Best")
+    private final BookModel book = BookModel.builder().id(UUID.randomUUID()).desc("The Best")
             .bookName("Best").genre(genre).build();
     private final BookEditionModel edition = BookEditionModel.builder().edition("First Edition")
             .id(UUID.randomUUID()).isbn("1234567890").numOfPages(450).publisher("Kachifo Inc")
-            .published("2006").bookId(model.getId()).year(year).build();
+            .published("2006").bookId(book.getId()).year(year).build();
 
     // create the book request that the book service receives
     private final BookAddRequest request = BookAddRequest.builder().bookName("Best").genre(Genre.Art)
             .isbn("1234567890").numOfPages(450).publisher("Kachifo").published("2006").edition("First Edition")
             .desc("The Best").build();
 
+    private final BookGetRequest requestGet = BookGetRequest.builder().bookId(UUID.randomUUID()).build();
+    private final EditionAddRequest requestEditionAdd = EditionAddRequest.builder().edition("First Edition")
+            .isbn("1234567890").numOfPages(450).publisher("Al Choco Inc").bookId(UUID.randomUUID()).build();
+    private final Optional<BookModel> bookModel = Optional.of(book);
+    private final Optional<BookEditionModel> editionModel = Optional.of(edition);
+    private final ItemAddRequest addRequest = ItemAddRequest.builder().editionId(edition.getId()).build();
+
+//    private final AuthorRequest authorRequest = AuthorRequest.builder().firstName("Chimamanda")
+//            .lastName("Adichie").build();
 
     @BeforeEach
     void setUp() {
-        service = new BookManagementService(repo, repoItem, repoEdition);
-        yearService = new YearService(yearRepo);
-//        System.out.println(yearService);
-//        System.out.println(service);
-        authors.add(author);
-        model.setAuthor(authors);
-        year.setBooks(editions);
-        Set<AuthorRequest> requests = new HashSet<>();
-        requests.add(AuthorRequest.builder().firstName("Chimamanda").lastName("Adichie").build());
-        request.setAuthor(requests);
-        items.add(item);
-        edition.setAllBooks(items);
-        editions.add(edition);
-        model.setEditions(editions);
-        System.out.println(repo.count());
-        lenient().when(yearRepo.findByYear("2006")).thenReturn(year);
-        lenient().when(yearRepo.save(year)).thenReturn(year);
-        System.out.println(yearRepo.count());
-        lenient().when(repoItem.save(item)).thenReturn(item);
+        // instantiate the injected services
+        //service = new BookManagementService(repo, repoItem, repoEdition);
 
-        lenient().when(repoEdition.save(edition)).thenReturn(edition);
-        lenient().when(repo.save(model)).thenReturn(model);
+        this.authors.add(author);
+        this.authorRequests.add(AuthorRequest.builder().firstName("Chimamanda").lastName("Adichie").build());
+        this.items.add(item);
+        this.editions.add(edition);
+        this.books.add(book);
+
+
+        // set their values
+        this.book.setAuthor(authors);
+        this.book.setEditions(editions);
+
+        this.year.setBooks(editions);
+        this.author.setBooks(books);
+        this.genre.setBooks(books);
+
+        this.request.setAuthor(authorRequests);
+        this.edition.setAllBooks(items);
+
+        lenient().when(this.repoItem.save(item)).thenReturn(item);
+
+        lenient().when(this.repoEdition.save(edition)).thenReturn(edition);
+        lenient().when(this.repo.save(book)).thenReturn(book);
+        lenient().when(this.repo.findById(requestGet.getBookId())).thenReturn(bookModel);
+
+        lenient().when(this.repo.findById(requestEditionAdd.getBookId())).thenReturn(bookModel);
+        lenient().when(this.repoEdition.findById(addRequest.getEditionId())).thenReturn(editionModel);
+
+        lenient().when(this.yearService.create("2006", edition)).thenReturn(year);
+        lenient().when(this.authorService.create(authorRequests)).thenReturn(authors);
+        lenient().when(this.genreService.create(Genre.Art, book)).thenReturn(genre);
     }
 
     @AfterEach
@@ -93,22 +117,26 @@ class BookManagementServiceTest {
 
     @Test
     void addBook() {
-        System.out.println(yearService);
-
-        BookResponse response = service.addBook(request);
+        BookResponse response = this.service.addBook(request);
         assertEquals(201, response.getResponseCode());
     }
 
     @Test
     void getBook() {
+        BookResponse response = this.service.getBook(requestGet.getBookId());
+        assertEquals(200, response.getResponseCode());
     }
 
     @Test
     void addEdition() {
+        BookResponse response = this.service.addEdition(requestEditionAdd);
+        assertEquals(201, response.getResponseCode());
     }
 
     @Test
     void addItem() {
+        BookResponse response = this.service.addItem(addRequest);
+        assertEquals(201, response.getResponseCode());
     }
 
     @Test

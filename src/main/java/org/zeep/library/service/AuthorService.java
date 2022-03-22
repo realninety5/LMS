@@ -22,6 +22,7 @@ public class AuthorService {
 
     public AuthorResponse getAuthor() {
         Author author = repo.findByFirstNameAndLastName("Chimamanda", "Adichie");
+        System.out.println("Hello from author."+author.getFirstName());
         return AuthorResponse.builder().body(author).responseCode(HttpStatus.OK.value())
                 .message("Here it is").build();
     }

@@ -18,7 +18,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.lenient;
 
-@SpringBootTest
+//@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class AuthorServiceTest {
 
@@ -31,12 +31,12 @@ class AuthorServiceTest {
 
     @BeforeEach
     void setUp() {
-        service = new AuthorService(repo);
+        //service = new AuthorService(repo);
         books.add(new BookModel());
         books.add(new BookModel());
-        lenient().when(repo.findByFirstNameAndLastName("Chimamanda", "Adichie"))
+        lenient().when(this.repo.findByFirstNameAndLastName("Chimamanda", "Adichie"))
                 .thenReturn(author);
-        lenient().when(repo.save(author)).thenReturn(author);
+        lenient().when(this.repo.save(author)).thenReturn(author);
 
     }
 
@@ -47,9 +47,8 @@ class AuthorServiceTest {
 
     @Test
     void getAuthor() {
-        AuthorResponse res = service.getAuthor();
+        AuthorResponse res = this.service.getAuthor();
         assertEquals(200, res.getResponseCode());
-        System.out.println(res.getBody().getFirstName());
     }
 
     @Test
@@ -58,9 +57,9 @@ class AuthorServiceTest {
         oldAuthor.add(AuthorRequest.builder().firstName("Chimamanda")
                 .lastName("Adichie").build());
 
-        Set<Author> authors = service.create(oldAuthor);
+        Set<Author> authors = this.service.create(oldAuthor);
         for (Author author: authors) {
-            assertEquals("Chimamanda", author.getFirstName());
+            assertEquals("Chimamanda", this.author.getFirstName());
         }
     }
 

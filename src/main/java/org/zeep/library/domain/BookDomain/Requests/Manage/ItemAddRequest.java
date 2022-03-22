@@ -8,7 +8,7 @@ import lombok.Setter;
 import javax.validation.constraints.NotEmpty;
 import java.util.UUID;
 
-@Getter @Setter @AllArgsConstructor
+@Getter @Setter @AllArgsConstructor @Builder
 public class ItemAddRequest {
 
 //    @NotEmpty(message = "Please enter the bookId")
