@@ -83,7 +83,7 @@ public class BookService {
         Optional<BookItemModel> bookItem = repo.findById(request.getBookId());
         BookItemModel item = bookItem.get();
 
-        if (item.getBorrowedBy().getUsername().equalsIgnoreCase(request.getUsername())) {
+        if (!item.getBorrowedBy().getUsername().equalsIgnoreCase(member.getUsername())) {
             return false;
         }
         // reset the bookItem values

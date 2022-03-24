@@ -1,4 +1,4 @@
-package org.zeep.library.Exceptions.validators;
+package org.zeep.library.ExceptionsAndValidators.validators;
 
 import javax.validation.*;
 import java.util.List;

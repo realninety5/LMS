@@ -40,12 +40,11 @@ class BookServiceTest {
 
     private final Set<BookItemModel> borrowedBooks = new HashSet<>();
     private final Set<BookItemModel> reservedBooks = new HashSet<>();
-    private final BookItemModel model = BookItemModel.builder().id(UUID.randomUUID()).available(false).reserved(false).build();
+    private final BookItemModel model = BookItemModel.builder().id(UUID.randomUUID()).available(true).reserved(false).build();
 
-//    private final BookItemModel model = BookItemModel.builder().id(UUID.randomUUID()).available(true).reserved(true).build();
     private final MemberModel memberModel = MemberModel.builder().id(UUID.randomUUID()).username("ninety5").build();
     private final BooksBorrowed borrowed = BooksBorrowed.builder().id(UUID.randomUUID())
-            .bookItem(model).borrowedBy((MemberModel) memberModel).build();
+            .bookItem(model).borrowedBy(memberModel).build();
     private final BookBorrowRequest borrowRequest = BookBorrowRequest.builder().bookId(model.getId())
             .username(memberModel.getUsername()).build();
     private final BookReservationRequest reserveRequest = BookReservationRequest.builder().bookId(model.getId())
