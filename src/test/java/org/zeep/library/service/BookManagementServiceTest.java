@@ -6,10 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.zeep.library.domain.AuthorDomain.Request.AuthorRequest;
-import org.zeep.library.domain.BookDomain.Requests.Manage.BookAddRequest;
-import org.zeep.library.domain.BookDomain.Requests.Manage.BookGetRequest;
-import org.zeep.library.domain.BookDomain.Requests.Manage.EditionAddRequest;
-import org.zeep.library.domain.BookDomain.Requests.Manage.ItemAddRequest;
+import org.zeep.library.domain.BookDomain.Requests.Manage.*;
 import org.zeep.library.domain.BookDomain.Responses.BookResponse;
 import org.zeep.library.enums.Genre;
 import org.zeep.library.model.*;
@@ -20,7 +17,6 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.lenient;
 
-//@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class BookManagementServiceTest {
 
@@ -71,13 +67,10 @@ class BookManagementServiceTest {
     private final Optional<BookEditionModel> editionModel = Optional.of(edition);
     private final ItemAddRequest addRequest = ItemAddRequest.builder().editionId(edition.getId()).build();
 
-//    private final AuthorRequest authorRequest = AuthorRequest.builder().firstName("Chimamanda")
-//            .lastName("Adichie").build();
 
     @BeforeEach
     void setUp() {
         // instantiate the injected services
-        //service = new BookManagementService(repo, repoItem, repoEdition);
 
         this.authors.add(author);
         this.authorRequests.add(AuthorRequest.builder().firstName("Chimamanda").lastName("Adichie").build());

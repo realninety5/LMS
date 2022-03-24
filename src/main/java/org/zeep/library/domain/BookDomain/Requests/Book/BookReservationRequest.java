@@ -9,11 +9,11 @@ import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
+@Setter @Builder
 @Getter
 public class BookReservationRequest {
     @NotEmpty(message = "please enter the id of the member that wants to borrow the book")
-    private UUID memberId;
+    private String username;
 
     @NotEmpty(message = "please enter the id of the book")
     private UUID bookId;
