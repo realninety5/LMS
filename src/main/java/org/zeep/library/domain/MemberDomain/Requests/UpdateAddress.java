@@ -9,10 +9,11 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
-@Getter
+@Getter @Builder
 public class UpdateAddress {
-    @NotEmpty(message = "Enter the memberId")
-    private UUID memberId;
+
+    @NotEmpty(message = "Enter the username")
+    private String username;
 
     @NotNull(message = "Enter your address.")
     private AddressRequest address;

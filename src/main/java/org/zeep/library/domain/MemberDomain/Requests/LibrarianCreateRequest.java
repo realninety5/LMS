@@ -8,7 +8,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @NoArgsConstructor @AllArgsConstructor
-@Data
+@Data @SuperBuilder
 public class LibrarianCreateRequest {
 
     @NotEmpty(message = "Enter a Username")

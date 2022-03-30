@@ -11,8 +11,8 @@ import java.util.UUID;
 @AllArgsConstructor
 
 public class LibrarianPasswordChange {
-    @NotEmpty(message = "Enter the memberId")
-    private UUID librarianId;
+    @NotEmpty(message = "Enter the username")
+    private String username;
 
     @NotEmpty(message = "Please enter your old password.")
     @Pattern(regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\\w\\s]).{8,}$",

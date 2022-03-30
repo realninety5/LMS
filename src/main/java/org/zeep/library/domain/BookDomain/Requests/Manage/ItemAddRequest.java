@@ -10,11 +10,6 @@ import java.util.UUID;
 
 @Getter @Setter @AllArgsConstructor @Builder
 public class ItemAddRequest {
-
-//    @NotEmpty(message = "Please enter the bookId")
-//    private UUID bookId;
-
     @NotEmpty(message = "Please enter the editionId")
     private UUID editionId;
-
 }

@@ -8,7 +8,7 @@ import org.zeep.library.enums.State;
 import javax.validation.constraints.*;
 
 @AllArgsConstructor
-@Setter
+@Setter @Builder
 @Getter
 public class AddressRequest {
 

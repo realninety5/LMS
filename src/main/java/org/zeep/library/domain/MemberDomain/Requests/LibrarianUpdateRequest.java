@@ -6,10 +6,10 @@ import lombok.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.UUID;
 
-@Setter @Getter @AllArgsConstructor
+@Setter @Getter @AllArgsConstructor @Builder
 public class LibrarianUpdateRequest {
     @NotEmpty(message = "Enter the memberId")
-    private UUID librarianId;
+    private String username;
 
     @NotEmpty(message = "You must enter a firstname")
     private String firstName;

@@ -5,10 +5,10 @@ import lombok.*;
 import javax.validation.constraints.*;
 import java.util.UUID;
 
-@Setter @Getter @AllArgsConstructor
+@Setter @Getter @AllArgsConstructor @Builder
 public class LibrarianEmailChangeRequest {
     @NotEmpty(message = "Enter the memberId")
-    private UUID librarianId;
+    private String username;
 
     @NotEmpty(message = "Enter a valid email.")
     @Pattern(regexp = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$",

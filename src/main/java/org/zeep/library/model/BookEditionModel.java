@@ -31,7 +31,7 @@ public class BookEditionModel {
     @Column(name = "publisher")
     private String publisher;
 
-    @Column(name = "published")
+    @Column(name = "year_published")
     private String published;
 
     @Column(name = "num_of_pages")

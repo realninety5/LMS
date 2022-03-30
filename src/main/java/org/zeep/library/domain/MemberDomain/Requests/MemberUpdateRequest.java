@@ -10,11 +10,11 @@ import java.util.UUID;
 
 
 @AllArgsConstructor @NoArgsConstructor @Setter
-@Getter
+@Getter @Builder
 public class MemberUpdateRequest {
 
     @NotEmpty(message = "Enter the memberId")
-    private UUID memberId;
+    private String username;
 
     @NotEmpty(message = "Enter your first name.")
     private String firstName;

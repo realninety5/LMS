@@ -5,7 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.zeep.library.domain.AuthorDomain.Request.AuthorRequest;
+import org.zeep.library.domain.AuthorDomain.Request.AuthorGetRequest;
 import org.zeep.library.domain.BookDomain.Requests.Manage.*;
 import org.zeep.library.domain.BookDomain.Responses.BookResponse;
 import org.zeep.library.enums.Genre;
@@ -15,6 +15,7 @@ import org.zeep.library.repo.*;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
@@ -40,7 +41,7 @@ class BookManagementServiceTest {
     // define the needed sets
     private final Set<BookModel> books = new HashSet<>();
     private final Set<Author> authors = new HashSet<>();
-    private final Set<AuthorRequest> authorRequests = new HashSet<>();
+    private final Set<AuthorGetRequest> authorRequests = new HashSet<>();
 
 
     // year, genre, and author
@@ -73,7 +74,7 @@ class BookManagementServiceTest {
         // instantiate the injected services
 
         this.authors.add(author);
-        this.authorRequests.add(AuthorRequest.builder().firstName("Chimamanda").lastName("Adichie").build());
+        this.authorRequests.add(AuthorGetRequest.builder().firstName("Chimamanda").lastName("Adichie").build());
         this.items.add(item);
         this.editions.add(edition);
         this.books.add(book);
@@ -90,10 +91,10 @@ class BookManagementServiceTest {
         this.request.setAuthor(authorRequests);
         this.edition.setAllBooks(items);
 
-        lenient().when(this.repoItem.save(item)).thenReturn(item);
+        lenient().when(this.repoItem.save(any(BookItemModel.class))).thenReturn(item);
 
-        lenient().when(this.repoEdition.save(edition)).thenReturn(edition);
-        lenient().when(this.repo.save(book)).thenReturn(book);
+        lenient().when(this.repoEdition.save(any(BookEditionModel.class))).thenReturn(edition);
+        lenient().when(this.repo.save(any(BookModel.class))).thenReturn(book);
         lenient().when(this.repo.findById(requestGet.getBookId())).thenReturn(bookModel);
 
         lenient().when(this.repo.findById(requestEditionAdd.getBookId())).thenReturn(bookModel);
@@ -112,12 +113,14 @@ class BookManagementServiceTest {
     void addBook() {
         BookResponse response = this.service.addBook(request);
         assertEquals(201, response.getResponseCode());
+        assertEquals(book.getBookName(), response.getBody().getBookName());
     }
 
     @Test
     void getBook() {
         BookResponse response = this.service.getBook(requestGet.getBookId());
         assertEquals(200, response.getResponseCode());
+        assertEquals(book.getBookName(), response.getBody().getBookName());
     }
 
     @Test

@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.zeep.library.domain.MemberDomain.Requests.CreateMember;
+import org.zeep.library.domain.MemberDomain.Requests.GetMemberRequest;
 import org.zeep.library.domain.MemberDomain.Responses.MemberResponse;
 import org.zeep.library.service.MemberService;
 
@@ -29,8 +30,9 @@ public class MemberController {
     }
 
     @GetMapping("{user_id}")
-    public void getUser() {
-        return;
+    public ResponseEntity<MemberResponse> getUser(@PathVariable("user_id") String username) {//(@Valid @RequestBody GetMemberRequest request) {
+        MemberResponse response = service.getMember(username);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("notification")

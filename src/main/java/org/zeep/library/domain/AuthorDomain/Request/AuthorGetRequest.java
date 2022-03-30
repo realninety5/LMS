@@ -10,7 +10,7 @@ import javax.validation.constraints.NotEmpty;
 
 
 @Data @AllArgsConstructor @NoArgsConstructor @Builder
-public class AuthorRequest {
+public class AuthorGetRequest {
 
     @NotEmpty(message = "Please enter the author's firstname")
     private String firstName;

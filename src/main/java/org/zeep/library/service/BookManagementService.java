@@ -3,6 +3,7 @@ package org.zeep.library.service;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.zeep.library.ExceptionsAndValidators.Exceptions.BookNotFoundException;
 import org.zeep.library.domain.BookDomain.Requests.Manage.*;
 import org.zeep.library.domain.BookDomain.Responses.BookResponse;
 import org.zeep.library.model.*;
@@ -165,13 +166,20 @@ public class BookManagementService {
         // sets the editionId of the book item for retrieval when a book is reserved
         item.setEditionId(edition.getId());
 
-//        book.getEditions().stream()
-//                .filter(ed -> ed.getId().compareTo(request.getEditionId())).findFirst();
         return BookResponse.builder().body(null).responseCode(HttpStatus.CREATED.value())
                 .message("Book has been added to the library.").build();
     }
 
-    public void removeBookItem() {
+    public BookResponse removeBookItem(BookRemoveRequest request) {
+        BookItemModel model;
+        try {
+            model = itemRepo.getById(request.getBookId());
+        } catch (RuntimeException e) {
+            throw new BookNotFoundException("Book not found.");
+        }
+        itemRepo.delete(model);
+        return BookResponse.builder().body(null).responseCode(HttpStatus.OK.value())
+                .message("Book has been deleted from the library.").build();
 
     }
 

@@ -2,7 +2,7 @@ package org.zeep.library.domain.BookDomain.Requests.Manage;
 
 import lombok.*;
 import org.zeep.library.ExceptionsAndValidators.validators.ValueOfEnum;
-import org.zeep.library.domain.AuthorDomain.Request.AuthorRequest;
+import org.zeep.library.domain.AuthorDomain.Request.AuthorGetRequest;
 import org.zeep.library.enums.Genre;
 
 import javax.validation.constraints.*;
@@ -17,7 +17,7 @@ public class BookUpdateRequest {
     private String bookName;
 
     @NotEmpty(message = "You must enter author's details")
-    private AuthorRequest author;
+    private AuthorGetRequest author;
 
     @ValueOfEnum(enumClass = Genre.class)
     @NotNull(message = "Please specify a genre.")

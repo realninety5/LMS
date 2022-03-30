@@ -6,12 +6,12 @@ import lombok.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.UUID;
 
-@AllArgsConstructor @Getter @Setter
+@AllArgsConstructor @Getter @Setter @Builder
 public class ChangeUsername {
 
-    @NotEmpty(message = "Enter the memberId")
-    private UUID memberId;
+    @NotEmpty(message = "Enter the username")
+    private String username;
 
     @NotEmpty(message = "Enter your username.")
-    private String username;
+    private String newUsername;
 }

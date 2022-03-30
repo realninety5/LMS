@@ -1,101 +1,96 @@
 package org.zeep.library.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.zeep.library.domain.MemberDomain.Requests.LibrarianCreateRequest;
-import org.zeep.library.domain.MemberDomain.Requests.LibrarianEmailChangeRequest;
-import org.zeep.library.domain.MemberDomain.Requests.LibrarianPasswordChange;
-import org.zeep.library.domain.MemberDomain.Requests.LibrarianUpdateRequest;
+import org.zeep.library.ExceptionsAndValidators.Exceptions.*;
+import org.zeep.library.domain.MemberDomain.Requests.*;
 import org.zeep.library.domain.MemberDomain.Responses.LibrarianResponse;
 import org.zeep.library.enums.Status;
 import org.zeep.library.model.LibrarianModel;
-import org.zeep.library.model.inheritance.Account;
 import org.zeep.library.repo.LibrarianRepo;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class LibrarianService {
 
-    private final LibrarianRepo repo;
-    private final PasswordEncoder encoder = new BCryptPasswordEncoder();
+    @Autowired
+    LibrarianRepo repo;
+    @Autowired PasswordEncoder encoder;
 
-    public LibrarianService(LibrarianRepo repo) {
-        this.repo = repo;
-    }
+//    public LibrarianService(LibrarianRepo repo) {
+//        this.repo = repo;
+//    }
 
     public LibrarianResponse create(LibrarianCreateRequest request) {
+
         // creates a new librarian entity
         LibrarianModel model = LibrarianModel.builder().lastName(request.getLastName())
                 .firstName(request.getFirstName())
                 .email(request.getEmail())
+                // comment out when testing
                 .password(encoder.encode(request.getPassword()))
                 .username(request.getUsername())
                 .id(UUID.randomUUID())
                 .status(Status.Active).build();
 
-        // save and return it
-        LibrarianModel m = repo.save(model);
-        return LibrarianResponse.builder().body(m).responseCode(HttpStatus.CREATED.value())
+        // try to save and return it
+        try {
+             model = repo.save(model);
+        }catch (RuntimeException e) {
+            throw new UsernameOrEmailAlreadyExistsException("Username already exists.");
+        }
+        return LibrarianResponse.builder().body(model).responseCode(HttpStatus.CREATED.value())
                 .message("Created the whole thingy").build();
 
     }
 
     public LibrarianResponse update(LibrarianUpdateRequest request) {
-        Optional<Account> librarianGet = repo.findById(request.getLibrarianId());
         LibrarianModel librarian;
-        if (librarianGet.isPresent()) {
-            librarian = (LibrarianModel) librarianGet.get();
-        } else {
-            return LibrarianResponse.builder().body(null)
-                    .responseCode(HttpStatus.NOT_FOUND.value()).message("Librarian not found")
-                    .build();
+        try {
+            librarian = repo.findByUsername(request.getUsername());
+        } catch (RuntimeException e) {
+            throw new NotFoundException("Member does not exist");
         }
+
         librarian.setFirstName(request.getFirstName());
         librarian.setLastName(request.getLastName());
         return LibrarianResponse.builder().body(repo.save(librarian))
-                .responseCode(HttpStatus.NOT_FOUND.value()).message("Librarian not found")
+                .responseCode(HttpStatus.OK.value()).message("Librarian created")
                 .build();
     }
 
     public LibrarianResponse changePassword(LibrarianPasswordChange request) {
-        Optional<Account> librarianGet = repo.findById(request.getLibrarianId());
         LibrarianModel librarian;
-        if (librarianGet.isPresent()) {
-            librarian = (LibrarianModel) librarianGet.get();
-        } else {
-            return LibrarianResponse.builder().body(null)
-                    .responseCode(HttpStatus.NOT_FOUND.value()).message("Librarian not found")
-                    .build();
+        try {
+            librarian = repo.findByUsername(request.getUsername());
+        } catch (RuntimeException e) {
+            throw new NotFoundException("Member does not exist");
         }
+
         if (!(request.getNewPassword().equalsIgnoreCase(request.getNewPassword2())
-        && encoder.matches(request.getOldPassword(), librarian.getPassword()))) {
-            return LibrarianResponse.builder().body(null)
-                    .responseCode(HttpStatus.NOT_FOUND.value()).message("Password do not match")
-                    .build();
+        || encoder.matches(request.getOldPassword(), librarian.getPassword()))) {
+            throw new PasswordDoNotMatchException("Password do not match");
         }
         librarian.setPassword(encoder.encode(request.getNewPassword()));
         return LibrarianResponse.builder().body(repo.save(librarian))
-                .responseCode(HttpStatus.NOT_FOUND.value()).message("Librarian not found")
+                .responseCode(HttpStatus.OK.value()).message("Password updated")
                 .build();
     }
 
     public LibrarianResponse changeEmail(LibrarianEmailChangeRequest request) {
-        Optional<Account> librarianGet = repo.findById(request.getLibrarianId());
         LibrarianModel librarian;
-        if (librarianGet.isPresent()) {
-            librarian = (LibrarianModel) librarianGet.get();
-        } else {
-            return LibrarianResponse.builder().body(null)
-                    .responseCode(HttpStatus.NOT_FOUND.value()).message("Librarian not found")
-                    .build();
+        try {
+            librarian = repo.findByUsername(request.getUsername());
+        } catch (RuntimeException e) {
+            throw new NotFoundException("Member does not exist");
         }
+
         librarian.setEmail(request.getEmail());
         return LibrarianResponse.builder().body(repo.save(librarian))
-                .responseCode(HttpStatus.NOT_FOUND.value()).message("Librarian not found")
+                .responseCode(HttpStatus.OK.value()).message("Email updated")
                 .build();
     }
 }

@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
@@ -61,7 +62,7 @@ class BookServiceTest {
         model.setBorrowedBy(memberModel);
         lenient().when(repo.findById(model.getId())).thenReturn((Optional<BookItemModel>) Optional.of(model));
         lenient().when(memberRepo.findByUsername(memberModel.getUsername())).thenReturn(memberModel);
-        lenient().when(borrowedRepo.save(borrowed)).thenReturn(borrowed);
+        lenient().when(borrowedRepo.save(any(BooksBorrowed.class))).thenReturn(borrowed);
     }
 
     @AfterEach

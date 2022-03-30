@@ -1,16 +1,11 @@
 package org.zeep.library.service;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.zeep.library.model.BookByYear;
-import org.zeep.library.model.BookEditionModel;
-import org.zeep.library.model.BookModel;
+import org.zeep.library.model.*;
 import org.zeep.library.repo.BookYearRepo;
 
 import java.util.HashSet;
@@ -18,7 +13,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.refEq;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,7 +33,7 @@ class YearServiceTest {
         editions.add(model);
         //editions.add(new BookEditionModel());
         year.setBooks(editions);
-        lenient().when(this.repo.save(year)).thenReturn(year);
+        lenient().when(this.repo.save(any(BookByYear.class))).thenReturn(year);
         lenient().when(this.repo.findByYear("2006")).thenReturn(year);
     }
 
