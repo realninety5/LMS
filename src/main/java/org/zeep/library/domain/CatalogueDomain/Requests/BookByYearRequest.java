@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 
-@AllArgsConstructor @Setter @Getter
+@AllArgsConstructor @Setter @Getter @Builder
 public class BookByYearRequest {
     @NotEmpty(message = "Please choose a year.")
     private String year;

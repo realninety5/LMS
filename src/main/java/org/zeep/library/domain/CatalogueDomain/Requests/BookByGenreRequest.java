@@ -1,6 +1,7 @@
 package org.zeep.library.domain.CatalogueDomain.Requests;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.zeep.library.ExceptionsAndValidators.validators.ValueOfEnum;
@@ -10,7 +11,7 @@ import javax.validation.constraints.NotEmpty;
 
 @AllArgsConstructor
 @Setter
-@Getter
+@Getter @Builder
 public class BookByGenreRequest {
     @NotEmpty(message = "Please choose a genre.")
     @ValueOfEnum(enumClass = Genre.class)

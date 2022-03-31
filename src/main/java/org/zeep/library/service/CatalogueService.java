@@ -21,13 +21,6 @@ public class CatalogueService {
     @Autowired GenreRepo genreRepo;
     @Autowired BookYearRepo yearRepo;
 
-//    public CatalogueService(BookRepo bookRepo, AuthorRepo authorRepo, GenreRepo genreRepo, BookYearRepo yearRepo) {
-//        this.bookRepo = bookRepo;
-//        this.authorRepo = authorRepo;
-//        this.genreRepo = genreRepo;
-//        this.yearRepo = yearRepo;
-//    }
-
     public CatalogueResponse getBooksByAuthor(AuthorGetRequest request) {
         // this method gets all the books written by a particular author
         Author author;
@@ -54,8 +47,13 @@ public class CatalogueService {
     }
 
     public CatalogueResponse getBookByYear(BookByYearRequest request) {
-        // this method gets all the editions published in a year
-        BookByYear year1 = yearRepo.findByYear(request.getYear());
+        BookByYear year1;
+        try {
+            // this method gets all the editions published in a year
+            year1 = yearRepo.findByYear(request.getYear());
+        } catch (RuntimeException e) {
+            throw new NotFoundException("No books for the given year");
+        }
         //Set<BookDTO> books = new HashSet<>();
         Map<String, Set<BookDTO>> books = new HashMap<>();
 
