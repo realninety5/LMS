@@ -19,7 +19,7 @@ import java.util.*;
 public class MemberService {
 
     @Autowired MemberRepository memberRepo;
-    @Autowired PasswordEncoder encoder = new BCryptPasswordEncoder();
+    @Autowired PasswordEncoder encoder;
     LibraryCardGenerator cardGenerator = new LibraryCardGenerator();
 
 //    public MemberService(MemberRepository memberRepo, LibrarianRepo librarianRepo) {

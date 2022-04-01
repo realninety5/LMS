@@ -34,6 +34,9 @@ public class BookItemModel {
     @Column(name = "date_added")
     private Date dateAdded;
 
+    @Column(name = "date_reserved")
+    private Date dateReserved;
+
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private MemberModel borrowedBy;
 

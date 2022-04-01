@@ -16,15 +16,9 @@ import org.zeep.library.domain.BookDomain.Requests.Book.BookReturnRequest;
 import org.zeep.library.domain.BookDomain.Responses.BookResponse;
 import org.zeep.library.model.*;
 import org.zeep.library.model.inheritance.Account;
-import org.zeep.library.repo.BookItemRepo;
-import org.zeep.library.repo.BorrowedBooksRepo;
-import org.zeep.library.repo.MemberRepository;
-import org.zeep.library.repo.ReservedBooksRepo;
+import org.zeep.library.repo.*;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -37,13 +31,21 @@ class BookServiceTest {
     @Mock BookItemRepo repo;
     @Mock MemberRepository memberRepo;
     @Mock BorrowedBooksRepo borrowedRepo;
+    @Mock
+    BookEditionRepo editionRepo;
+    @Mock BookRepo bookRepo;
     @Mock ReservedBooksRepo reservedRepo;
 
     private final Set<BookItemModel> borrowedBooks = new HashSet<>();
     private final Set<BookItemModel> reservedBooks = new HashSet<>();
-    private final BookItemModel model = BookItemModel.builder().id(UUID.randomUUID()).available(true).reserved(false).build();
+    private final MemberModel memberModel = MemberModel.builder().id(UUID.randomUUID()).username("ninety5")
+            .email("kingsleyog95@gmail.com").build();
 
-    private final MemberModel memberModel = MemberModel.builder().id(UUID.randomUUID()).username("ninety5").build();
+    private final BookItemModel model = BookItemModel.builder().id(UUID.randomUUID()).available(true).reserved(true)
+            .dateReserved(new Date()).editionId(UUID.randomUUID()).reservedBy(memberModel).build();
+    private final BookEditionModel editionModel = BookEditionModel.builder().bookId(UUID.randomUUID()).build();
+    private final BookModel book = BookModel.builder().bookName("Ada Ada").build();
+
     private final BooksBorrowed borrowed = BooksBorrowed.builder().id(UUID.randomUUID())
             .bookItem(model).borrowedBy(memberModel).build();
     private final BookBorrowRequest borrowRequest = BookBorrowRequest.builder().bookId(model.getId())
@@ -61,6 +63,8 @@ class BookServiceTest {
         memberModel.setReservedBooks(reservedBooks);
         model.setBorrowedBy(memberModel);
         lenient().when(repo.findById(model.getId())).thenReturn((Optional<BookItemModel>) Optional.of(model));
+        lenient().when(editionRepo.getById(model.getEditionId())).thenReturn(editionModel);
+        lenient().when(bookRepo.getById(editionModel.getBookId())).thenReturn(book);
         lenient().when(memberRepo.findByUsername(memberModel.getUsername())).thenReturn(memberModel);
         lenient().when(borrowedRepo.save(any(BooksBorrowed.class))).thenReturn(borrowed);
     }

@@ -3,10 +3,12 @@ package org.zeep.library.DTO;
 
 import lombok.*;
 
-import java.util.UUID;
+import java.util.Date;
 
-@AllArgsConstructor @Data @NoArgsConstructor
+@AllArgsConstructor @Data @NoArgsConstructor @Builder
 public class NotifyEntity {
-    private UUID memberId;
-    private UUID bookId;
+    private String bookName;
+    private String reservedBy;
+    private Date date;
+    private String email;
 }
