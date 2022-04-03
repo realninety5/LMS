@@ -15,7 +15,7 @@ public class NotificationHandler implements EmailService {
     public void send(NotifyEntity entity) {
         System.out.println("Hello. iinna"+ emailSender);
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("kingsleyog95@gmail.com");
+        message.setFrom("king@gmail.com");
         message.setTo(entity.getEmail());
         message.setSubject(entity.getBookName()+ " is now available");
         message.setText(entity.getBookName()+ " is now available and can be borrowed within the next 2 days.");
